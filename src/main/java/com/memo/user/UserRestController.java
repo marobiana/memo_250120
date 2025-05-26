@@ -41,11 +41,17 @@ public class UserRestController {
             @RequestParam("email") String email
     ) {
         // db insert
+        boolean isSuccess = userBO.addUser(loginId, password, name, email);
 
         // 응답
         Map<String, Object> result = new HashMap<>();
-        result.put("code", 200);
-        result.put("result", "성공");
+        if (isSuccess) {
+            result.put("code", 200);
+            result.put("result", "성공");
+        } else {
+            result.put("code", 500);
+            result.put("error_message", "회원가입이 정상적으로 진행되지 않았습니다.");
+        }
         return result;
     }
 }
