@@ -1,0 +1,51 @@
+package com.memo.user;
+
+import com.memo.user.service.UserBO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RequiredArgsConstructor
+@RequestMapping("/user")
+@RestController
+public class UserRestController {
+    private final UserBO userBO; // 불변의 객체, 반드시 초기화
+
+    /**
+     * 로그인 아이디 중복확인 API
+     * @param loginId
+     * @return
+     */
+    @GetMapping("/is-duplicate-id")
+    public Map<String, Object> isDuplicateId(
+            @RequestParam("loginId") String loginId
+    ) {
+        // db 조회
+        boolean isDuplicate = userBO.isDuplicateLoginId(loginId);
+
+        // 응답 json
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("is_duplicate_id", isDuplicate);
+        return result;
+    }
+
+    @PostMapping("/sign-up")
+    public Map<String, Object> signUp(
+            @RequestParam("loginId") String loginId,
+            @RequestParam("password") String password,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email
+    ) {
+        // db insert
+
+        // 응답
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("result", "성공");
+        return result;
+    }
+}
