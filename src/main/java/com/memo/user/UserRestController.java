@@ -1,5 +1,6 @@
 package com.memo.user;
 
+import com.memo.user.entity.UserEntity;
 import com.memo.user.service.UserBO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,14 @@ public class UserRestController {
         return result;
     }
 
+    /**
+     * 회원가입 API
+     * @param loginId
+     * @param password
+     * @param name
+     * @param email
+     * @return
+     */
     @PostMapping("/sign-up")
     public Map<String, Object> signUp(
             @RequestParam("loginId") String loginId,
@@ -51,6 +60,29 @@ public class UserRestController {
         } else {
             result.put("code", 500);
             result.put("error_message", "회원가입이 정상적으로 진행되지 않았습니다.");
+        }
+        return result;
+    }
+
+    @PostMapping("/sign-in")
+    public Map<String, Object> signIn(
+            @RequestParam("loginId") String loginId,
+            @RequestParam("password") String password
+    ) {
+        // db select
+        UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, password);
+
+        // 응답값
+        Map<String, Object> result = new HashMap<>();
+        if (user != null) {
+            // 로그인 성공 시 서버에 세션 공간을 만들어둔다.
+            
+
+            result.put("code", 200);
+            result.put("result", "성공");
+        } else {
+            result.put("code", 300);
+            result.put("error_message", "존재하지 않는 사용자입니다.");
         }
         return result;
     }

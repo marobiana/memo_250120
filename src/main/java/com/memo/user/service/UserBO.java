@@ -45,4 +45,14 @@ public class UserBO {
                 .build());
         return user != null; // 회원가입 잘 되면 true
     }
+
+    // input:loginId, password
+    // output:UserEntity(단건) or null(로그인 실패)
+    public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
+        // 비밀번호 해싱
+        String hashedPassword = HashUtils.md5(password);
+
+        // DB 조회
+        return userRepository.findByLoginIdAndPassword(loginId, hashedPassword).orElse(null);
+    }
 }
