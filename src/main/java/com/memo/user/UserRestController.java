@@ -2,6 +2,8 @@ package com.memo.user;
 
 import com.memo.user.entity.UserEntity;
 import com.memo.user.service.UserBO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +69,8 @@ public class UserRestController {
     @PostMapping("/sign-in")
     public Map<String, Object> signIn(
             @RequestParam("loginId") String loginId,
-            @RequestParam("password") String password
+            @RequestParam("password") String password,
+            HttpServletRequest request
     ) {
         // db select
         UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, password);
@@ -76,7 +79,10 @@ public class UserRestController {
         Map<String, Object> result = new HashMap<>();
         if (user != null) {
             // 로그인 성공 시 서버에 세션 공간을 만들어둔다.
-            
+            HttpSession session = request.getSession();
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userName", user.getName());
+            session.setAttribute("userLoginId", user.getLoginId());
 
             result.put("code", 200);
             result.put("result", "성공");
