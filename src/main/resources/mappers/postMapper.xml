@@ -9,4 +9,18 @@
         FROM
             `post`
     </select>
+
+    <select id="selectPostListByUserId" parameterType="int" resultType="com.memo.post.domain.Post">
+        SELECT
+            `id`
+            ,`userId`
+            ,`subject`
+            ,`content`
+            ,`imagePath`
+            ,`createdAt`
+            ,`updatedAt`
+        FROM
+            `post`
+        ORDER BY `id` DESC
+    </select>
 </mapper>

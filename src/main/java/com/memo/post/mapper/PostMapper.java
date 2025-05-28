@@ -11,4 +11,5 @@ public interface PostMapper {
     // input: X
     // output: List<Post>
     public List<Post> selectPostListTest();
+    public List<Post> selectPostListByUserId(int userId);
 }
