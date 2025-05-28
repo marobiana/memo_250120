@@ -32,4 +32,9 @@ public class PostController {
 
         return "post/postList";
     }
+
+    @GetMapping("/post-create-view")
+    public String postCreateView() {
+        return "post/postCreate";
+    }
 }

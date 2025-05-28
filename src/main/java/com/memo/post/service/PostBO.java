@@ -4,6 +4,7 @@ import com.memo.post.domain.Post;
 import com.memo.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,5 +17,13 @@ public class PostBO {
     // o: List<Post>
     public List<Post> getPostListByUserId(int userId) {
         return postMapper.selectPostListByUserId(userId);
+    }
+
+    // i: 4개
+    // o: int(행 개수)
+    public int addPost(int userId, String subject,
+                       String content, MultipartFile file) {
+
+        return postMapper.insertPost(userId, subject, content, null);
     }
 }
