@@ -21,9 +21,15 @@ public class PostBO {
 
     // i: 4개
     // o: int(행 개수)
-    public int addPost(int userId, String subject,
-                       String content, MultipartFile file) {
+    public int addPost(int userId, String userLoginId,
+                       String subject, String content, MultipartFile file) {
 
-        return postMapper.insertPost(userId, subject, content, null);
+        String imagePath = null;
+        // 파일이 존재할 때만 업로드
+        if (file != null) {
+
+        }
+
+        return postMapper.insertPost(userId, subject, content, imagePath);
     }
 }
