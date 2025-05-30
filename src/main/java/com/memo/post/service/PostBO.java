@@ -4,6 +4,7 @@ import com.memo.common.FileManagerService;
 import com.memo.post.domain.Post;
 import com.memo.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,5 +34,9 @@ public class PostBO {
         }
 
         return postMapper.insertPost(userId, subject, content, imagePath);
+    }
+
+    public Post getPostByPostIdUserId(int postId, int userId) {
+        return postMapper.selectPostByPostIdUserId(postId, userId);
     }
 }
