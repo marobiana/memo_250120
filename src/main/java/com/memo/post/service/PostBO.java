@@ -4,7 +4,10 @@ import com.memo.common.FileManagerService;
 import com.memo.post.domain.Post;
 import com.memo.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +15,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j // lombok
 public class PostBO {
+    //private Logger log = LoggerFactory.getLogger(PostBO.class);
     private final PostMapper postMapper;
     private final FileManagerService fileManager;
 
@@ -34,6 +39,28 @@ public class PostBO {
         }
 
         return postMapper.insertPost(userId, subject, content, imagePath);
+    }
+
+    // i: 6개 파라미터
+    // o: X
+    public void updatePostByPostIdUserId(int userId, String userLoginId,
+                                         int postId, String subject,
+                                         String content, MultipartFile file) {
+
+        // 기존글 가져오기 1. 이미지 교체시 기존 이미지 제거 2. 대상 존재 확인(생략 가능, 캐시 기대)
+        Post post = postMapper.selectPostByPostIdUserId(postId, userId);
+        if (post == null) {
+            log.info("[글 수정] post is null. postId:{}, userId:{}", postId, userId);
+            return;
+        }
+
+        // 파일 존재 시 파일 업로드
+        String imagePath = null;
+        // 만약 기존 이미지 존재
+        // 업로드 성공 => 이미지 교체 => 업로드 된 기존 이미지 삭제
+        // 업로드 실패 => 이미지 유지
+
+        // DB 업데이트
     }
 
     public Post getPostByPostIdUserId(int postId, int userId) {
