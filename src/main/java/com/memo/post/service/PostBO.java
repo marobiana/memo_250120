@@ -56,11 +56,21 @@ public class PostBO {
 
         // 파일 존재 시 파일 업로드
         String imagePath = null;
+        if (file != null) {
+            imagePath = fileManager.uploadFile(file, userLoginId);
+
+            // 업로드 성공 & 기존 이미지 있을 때 => 기존 이미지 삭제 (부가적인 로직)
+            if (imagePath != null && post.getImagePath() != null) {
+                fileManager.deleteFile(post.getImagePath()); // 기존 이미지 삭제
+            }
+        }
         // 만약 기존 이미지 존재
         // 업로드 성공 => 이미지 교체 => 업로드 된 기존 이미지 삭제
         // 업로드 실패 => 이미지 유지
 
         // DB 업데이트
+        // imagePath가 null이면 mybatis에서 image update 하지 않게 처리
+        postMapper.updatePostByPostId(postId, subject, content, imagePath);
     }
 
     public Post getPostByPostIdUserId(int postId, int userId) {

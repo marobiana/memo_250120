@@ -1,5 +1,6 @@
 package com.memo.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Slf4j
 @Component // Spring bean
 public class FileManagerService {
     // 실제 업로드 된 이미지 파일이 저장될 경로
@@ -43,5 +45,36 @@ public class FileManagerService {
         // http://localhost/images/폴더명/이미지이름
         // /images/aaaa_1728349208/sun.png
         return "/images/" + directoryName + "/" + file.getOriginalFilename();
+    }
+
+    // i: imagePath
+    // o: X
+    public void deleteFile(String imagePath) {
+        // as-is: D:\신보람\6_spring_project\memo_image//images/aaaa_1748518858536/prairie-dog-9569847_1280.jpg
+        // to-be: D:\신보람\6_spring_project\memo_image/aaaa_1748518858536/prairie-dog-9569847_1280.jpg
+        //   겹치고 있는  /images/  스트링 제거
+        Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+
+        // 이미지가 있는가?
+        if (Files.exists(path)) {
+            // 이미지 삭제
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                log.info("[### 파일매니저 image 삭제] imagePath:{}", imagePath);
+                return;
+            }
+
+            // 폴더(디렉토리) 삭제
+            path = path.getParent();
+            // 폴더가 있는가?
+            if (Files.exists(path)) {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    log.info("[### 파일 매니저 폴더 삭제] path:{}", path);
+                }
+            }
+        }
     }
 }
