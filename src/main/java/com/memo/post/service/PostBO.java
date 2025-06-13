@@ -76,4 +76,23 @@ public class PostBO {
     public Post getPostByPostIdUserId(int postId, int userId) {
         return postMapper.selectPostByPostIdUserId(postId, userId);
     }
+
+    // i: postId, userId(기존글 가져오기 위함)
+    // o: X
+    public void deletePostByPostIdUserId(int postId, int userId) {
+        // 기존글 가져오기 (이미지가 있을 수도 있음)
+        Post post = postMapper.selectPostByPostIdUserId(postId, userId);
+        if (post == null) {
+            log.warn("[#### 글 삭제] post is null. postId:{}, userId:{}", postId, userId);
+            return;
+        }
+
+        // 기존글에 이미지가 있다면 이미지 파일을 삭제
+        if (post.getImagePath() != null) {
+            fileManager.deleteFile(post.getImagePath());
+        }
+
+        // DB delete
+        postMapper.deletePostById(postId);
+    }
 }

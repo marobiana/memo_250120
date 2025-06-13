@@ -49,6 +49,15 @@ public class PostRestController {
         return result;
     }
 
+    /**
+     * 글 수정 API
+     * @param postId
+     * @param subject
+     * @param content
+     * @param file
+     * @param session
+     * @return
+     */
     @PutMapping("/update")
     public Map<String, Object> update(
             @RequestParam("postId") int postId,
@@ -64,6 +73,24 @@ public class PostRestController {
         // 수정 => DB 업데이트, 파일업로드
         postBO.updatePostByPostIdUserId(userId, userLoginId,
                 postId, subject, content, file);
+
+        // 응답값
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("result", "성공");
+        return result;
+    }
+
+    @DeleteMapping("/delete")
+    public Map<String, Object> delete(
+            @RequestParam("postId") int postId,
+            HttpSession session
+    ) {
+        // 세션 userId(기존글 가져오기 위해)
+        int userId = (int)session.getAttribute("userId");
+
+        // db delete
+        postBO.deletePostByPostIdUserId(postId, userId);
 
         // 응답값
         Map<String, Object> result = new HashMap<>();
