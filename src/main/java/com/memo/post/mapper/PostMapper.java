@@ -12,7 +12,11 @@ public interface PostMapper {
     // input: X
     // output: List<Post>
     public List<Post> selectPostListTest();
-    public List<Post> selectPostListByUserId(int userId);
+    public List<Post> selectPostListByUserId(
+            @Param("userId") int userId,
+            @Param("direction") String direction,
+            @Param("standardId") Integer standardId,
+            @Param("limit") int limit);
     public int insertPost(
             @Param("userId") int userId,
             @Param("subject") String subject,

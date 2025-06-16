@@ -19,7 +19,10 @@ public class PostController {
     private final PostBO postBO;
 
     @GetMapping("/post-list-view")
-    public String postListView(HttpSession session, Model model) {
+    public String postListView(
+            @RequestParam(value = "prevId", required = false) Integer prevIdParam,
+            @RequestParam(value = "nextId", required = false) Integer nextIdParam,
+            HttpSession session, Model model) {
         // 로그인 된 사용자인지 검사
         Integer userId = (Integer)session.getAttribute("userId");
         if (userId == null) {
@@ -28,8 +31,20 @@ public class PostController {
         }
 
         // db select
-        List<Post> postList = postBO.getPostListByUserId(userId);
+        List<Post> postList = postBO.getPostListByUserId(userId, prevIdParam, nextIdParam);
+
+        // postList가 비어있지 않을 때 페이징 정보 채우기
+        int prevId = 0;
+        int nextId = 0;
+        if (postList.isEmpty() == false) {
+            // [10, 9, 8]
+            prevId = postList.get(0).getId(); // 첫번째칸 postId
+            nextId = postList.get(postList.size() - 1).getId(); // 마지막칸 postId
+        }
+
         model.addAttribute("postList", postList);
+        model.addAttribute("prevId", prevId);
+        model.addAttribute("nextId", nextId);
 
         return "post/postList";
     }
