@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/images/**", "/css/**", "/error", "/.well-known/**");
+                .excludePathPatterns("/images/**", "/css/**", "/error", "/.well-known/**", "/user/sign-out");
     }
 
     // 예언된 이미지 경로와 서버에 업로드 된 실제 파일과 매핑
