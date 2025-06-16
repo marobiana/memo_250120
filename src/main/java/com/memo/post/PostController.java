@@ -40,6 +40,17 @@ public class PostController {
             // [10, 9, 8]
             prevId = postList.get(0).getId(); // 첫번째칸 postId
             nextId = postList.get(postList.size() - 1).getId(); // 마지막칸 postId
+
+            // 이전이 없나? 없으면 0
+            // 유저가 쓴 글들 중 제일 큰 글번호가 prevId와 같으면 이전 없음
+            if (postBO.isPrevLastPageByUserId(userId, prevId)) {
+                prevId = 0;
+            }
+
+            // 다음이 없나? 없으면 0
+            if (postBO.isNextLastPageByUserId(userId, nextId)) {
+                nextId = 0;
+            }
         }
 
         model.addAttribute("postList", postList);

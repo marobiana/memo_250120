@@ -52,6 +52,18 @@ public class PostBO {
         return postMapper.selectPostListByUserId(userId, direction, standardId, POST_MAX_SIZE);
     }
 
+    public boolean isPrevLastPageByUserId(int userId, int prevId) {
+        // 제일 큰 숫자 desc
+        int maxPostId = postMapper.selectPostIdByUserIdAsSort(userId, "desc");
+        return maxPostId == prevId; // true: 마지막
+    }
+
+    public boolean isNextLastPageByUserId(int userId, int nextId) {
+        // 제일 작은 숫자 asc
+        int minPostId = postMapper.selectPostIdByUserIdAsSort(userId, "asc");
+        return minPostId == nextId; // true: 마지막
+    }
+
     // i: 4개
     // o: int(행 개수)
     public int addPost(int userId, String userLoginId,
