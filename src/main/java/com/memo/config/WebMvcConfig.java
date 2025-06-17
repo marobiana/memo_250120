@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+// 이슈 기록용 커밋
 @RequiredArgsConstructor
 @Configuration // Spring bean
 public class WebMvcConfig implements WebMvcConfigurer {
