@@ -1,5 +1,6 @@
 package com.memo.user;
 
+import com.memo.aop.TimeTrace;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class UserController {
      * 로그인 화면
      * @return
      */
+    @TimeTrace
     @GetMapping("/sign-in-view")
     public String signInView() {
         return "user/signIn";
