@@ -14,7 +14,8 @@ import java.nio.file.Paths;
 @Component // Spring bean
 public class FileManagerService {
     // 실제 업로드 된 이미지 파일이 저장될 경로
-    public final static String FILE_UPLOAD_PATH = "D:\\신보람\\6_spring_project\\memo_image/";
+    public final static String FILE_UPLOAD_PATH = "/home/ec2-user/m_images/";
+    //public final static String FILE_UPLOAD_PATH = "D:\\신보람\\6_spring_project\\memo_image/";
 
     // i: multipartFile, userLoginId(폴더명으로 사용)
     // o: imagePath(String)
